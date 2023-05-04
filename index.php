@@ -51,6 +51,12 @@
     <title>PHP Hotel</title>
 </head>
 <body>
-    
+    <?php foreach($hotels as $hotel) :?>
+        <p><?= $hotel['name']?></p>
+        <p><?= $hotel['description']?></p>
+        <p><?= $hotel['parking']?></p>
+        <p><?= $hotel['vote']?></p>
+        <p><?= $hotel['distance_to_center']?></p>
+    <? endforeach ?>
 </body>
 </html>
