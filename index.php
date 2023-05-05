@@ -40,6 +40,23 @@ $hotels = [
 
 ];
 
+if (!empty($_GET['parkingplace']) && !empty($_GET['minrating'])) {
+    $hotels = array_filter($hotels, function ($hotel) {
+        return $hotel['parking'] && $hotel['vote'];
+    });
+}
+if (!empty($_GET['parkingplace'])) {
+    $hotels = array_filter($hotels, function ($hotel) {
+        return $hotel['parking'] == $_GET['parkingplace'];
+    });
+} elseif (!empty($_GET['minrating'])) {
+    $hotels = array_filter($hotels, function ($hotel) {
+        return $hotel['vote'] >= $_GET['minrating'];
+    });
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +74,28 @@ $hotels = [
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col" colspan="7" class="text-center fs-1">HOTELS</th>
+                <th scope="col" colspan="6" class="text-center fs-1">HOTELS</th>
+            </tr>
+            <tr>
+                <th scope="col" colspan="6">
+                    <form method="get" class="d-flex">
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="parkingplace" value="1">
+                            <label class="form-check-label">
+                            <p>Have parking spot</p>
+                        </div>
+                        <select name="minrating" class="form-select">
+                            <option value="">Select rating</option>
+                            <option value="1">1 star</option>
+                            <option value="2">2 stars</option>
+                            <option value="3">3 stars</option>
+                            <option value="4">4 stars</option>
+                            <option value="5">5 stars</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </th>
             </tr>
             <tr>
                 <th scope="col">#</th>
@@ -68,24 +106,24 @@ $hotels = [
                 <th scope="col">Distance to Center</th>
             </tr>
         </thead>
-        <?php foreach ($hotels as $hotel) : ?>
-            <tbody>
+        <tbody>
+            <?php foreach ($hotels as $hotel) : ?>
                 <tr>
                     <th scope="row"><?= $hotel[''] ?></th>
                     <td><?= $hotel['name'] ?></td>
                     <td><?= $hotel['description'] ?></td>
-                    
-                    <?php if($hotel['parking'] == 1) : ?>
+
+                    <?php if ($hotel['parking'] == 1) : ?>
                         <td>True</td>
                     <?php else : ?>
                         <td>False</td>
-                    <?php endif; ?> 
+                    <?php endif; ?>
 
                     <td>@<?= $hotel['vote'] ?></td>
-                    <td>@<?= $hotel['distance_to_center'].' km' ?></td>
+                    <td>@<?= $hotel['distance_to_center'] . ' km' ?></td>
                 </tr>
-            </tbody>
-        <? endforeach ?>
+            <? endforeach; ?>
+        </tbody>
 
 </body>
 
